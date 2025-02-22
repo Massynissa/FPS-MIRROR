@@ -26,15 +26,16 @@ Camera sceneCamera;
                 sceneCamera.gameObject.SetActive(false);
             }
         }
-
-        RegisterPlayer();
     }
 
-    private void RegisterPlayer()
+    public override void OnStartClient()
     {
-        //Change le nom du joueur par l'expression player = identifiant unique
-        string playerName = "Player" + GetComponent<NetworkIdentity>().netId;
-        transform.name = playerName;
+        base.OnStartClient();
+
+        string netId = GetComponent<NetworkIdentity>().netId.ToString();
+        Player player = GetComponent<Player>();
+
+        GameManager.RegisterPlayer(netId, player);
     }
 
     private void AssignRemoteLayer()
@@ -57,5 +58,7 @@ Camera sceneCamera;
         {
             sceneCamera.gameObject.SetActive(true);
         }
+
+        GameManager.UnregisterPlayer(transform.name);
     }
 }
