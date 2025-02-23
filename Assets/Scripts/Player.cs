@@ -1,5 +1,6 @@
 using UnityEngine;
 using Mirror;
+using System.Collections;
 
 public class Player : NetworkBehaviour
 {
@@ -41,12 +42,34 @@ public class Player : NetworkBehaviour
         {
             disableOnDeath[i].enabled = wasEnableOnStart[i];
         }
+
         Collider col = GetComponent<Collider>();
         if(col != null)
         {
             col.enabled = true;
         }
+    }
 
+    private IEnumerator Respawn()
+{
+    yield return new WaitForSeconds(GameManager.instance.matchSettings.respawnTimer);
+    SetDefaults();
+    Transform spawnPoint = NetworkManager.singleton.GetStartPosition();
+    transform.position = spawnPoint.position;
+    transform.rotation = spawnPoint.rotation;
+}
+
+    private void Update()
+    {
+        if(!isLocalPlayer)
+        {
+            return;
+        }
+
+        if(Input.GetKeyDown(KeyCode.K))
+        {
+            RpcTakeDamage(999);
+        }
     }
 
     [ClientRpc]
@@ -75,6 +98,14 @@ public class Player : NetworkBehaviour
             disableOnDeath[i].enabled = false;
         }
 
-        Debug.Log(transform.name + " a été éliminé."); //20:44 ep8
+        Collider col = GetComponent<Collider>();
+        if(col != null)
+        {
+            col.enabled = false;
+        }
+
+        Debug.Log(transform.name + " a été éliminé."); //20:44
+
+        StartCoroutine(Respawn());
     }
 }

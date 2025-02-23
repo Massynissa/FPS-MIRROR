@@ -574,7 +574,7 @@ MonoBehaviour:
   syncInterval: 0
   weapon:
     name: Submachine Gun
-    damage: 10
+    damage: 40
     range: 100
   cam: {fileID: 5002655630876909781}
   mask:
@@ -592,6 +592,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 10f7a69ad6ef1244e99beebe714ab29a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  syncDirection: 0
+  syncMode: 0
+  syncInterval: 0
+  maxHealth: 100
+  disableOnDeath:
+  - {fileID: -3796323589932104172}
+  - {fileID: 5002655632219280096}
 --- !u!1 &5002655632300691328
 GameObject:
   m_ObjectHideFlags: 0
